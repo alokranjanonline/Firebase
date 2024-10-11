@@ -3,6 +3,7 @@ package com.example.firebase
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,11 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.firebase.ui.theme.FirebaseTheme
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import org.w3c.dom.Text
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val textView=findViewById<TextView>(R.id.textView1)
         val db = Firebase.firestore
         // Create a new user with a first and last name
         val user = hashMapOf(
@@ -47,6 +50,8 @@ class MainActivity : ComponentActivity() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     Log.d(TAG, "${document.id} => ${document.data}")
+                    textView.text= document.data.toString()
+                    Toast.makeText(this, "${document.data}", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
